@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "import:workbook": "node scripts/import-workbook.mjs"
+    "import:workbook": "node scripts/import-workbook.mjs",
+    "create:team": "node scripts/create-team-users.mjs"
   },
   "dependencies": {
     "@supabase/ssr": "^0.12.0",
