@@ -13,8 +13,13 @@ if (!url || !key || team.some(({ email, password }) => !email || !password)) {
 if (team.some(({ password }) => password.length < 10)) throw new Error("Use contraseñas temporales de al menos 10 caracteres.");
 
 const supabase = createClient(url, key, { auth: { persistSession: false } });
-const { data: organization, error: organizationError } = await supabase.from("organizations").select("id").eq("slug", "norlinsa").single();
+let { data: organization, error: organizationError } = await supabase.from("organizations").select("id").eq("slug", "norlinsa").maybeSingle();
 if (organizationError) throw organizationError;
+if (!organization) {
+  const { data, error } = await supabase.from("organizations").upsert({ name: "NORLINSA", slug: "norlinsa" }, { onConflict: "slug" }).select("id").single();
+  if (error) throw error;
+  organization = data;
+}
 
 for (const member of team) {
   const { data, error } = await supabase.auth.admin.createUser({
