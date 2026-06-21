@@ -14,7 +14,18 @@ const workbook = new ExcelJS.Workbook();
 await workbook.xlsx.readFile(file);
 const raw = (value) => value && typeof value === "object" && "result" in value ? value.result : value;
 const asNumber = (value) => typeof raw(value) === "number" ? raw(value) : Number(String(raw(value) ?? "").replace(/[$,]/g, "")) || 0;
-const asDate = (value) => { const candidate = raw(value); return candidate instanceof Date ? candidate.toISOString().slice(0, 10) : candidate ? new Date(String(candidate)).toISOString().slice(0, 10) : null; };
+const asDate = (value) => {
+  const candidate = raw(value);
+  if (!candidate) return null;
+  const parsed = candidate instanceof Date ? candidate : new Date(String(candidate));
+  return Number.isNaN(parsed.getTime()) ? null : parsed.toISOString().slice(0, 10);
+};
+const asDateTime = (value) => {
+  const candidate = raw(value);
+  if (!candidate) return null;
+  const parsed = candidate instanceof Date ? candidate : new Date(String(candidate));
+  return Number.isNaN(parsed.getTime()) ? null : parsed.toISOString();
+};
 const text = (value) => String(raw(value) ?? "").trim();
 const normalize = (value) => text(value).toUpperCase().replace(/\s+/g, " ");
 const chunk = (items, size = 250) => Array.from({ length: Math.ceil(items.length / size) }, (_, index) => items.slice(index * size, (index + 1) * size));
@@ -60,8 +71,7 @@ if (taxSheet) {
     if (!cell(1) || normalize(cell(1)) === "RUC_EMISOR") continue;
     const subtotal = asNumber(cell(9)); const total = asNumber(cell(11));
     if (!subtotal && !total) continue;
-    const authorizationValue = raw(cell(6));
-    const record = { organization_id: organization.id, supplier_ruc: text(cell(1)) || null, supplier_name: text(cell(2)) || "Sin proveedor", receipt_type: text(cell(3)) || null, receipt_number: text(cell(4)) || null, access_key: text(cell(5)) || null, authorization_date: authorizationValue ? new Date(String(authorizationValue)).toISOString() : null, issue_date: asDate(cell(7)), recipient_identification: text(cell(8)) || null, subtotal, vat: asNumber(cell(10)), total, assigned_to: text(cell(12)) || null, source_sheet: "GASTOS SRI DECLARADOS", source_row: index };
+    const record = { organization_id: organization.id, supplier_ruc: text(cell(1)) || null, supplier_name: text(cell(2)) || "Sin proveedor", receipt_type: text(cell(3)) || null, receipt_number: text(cell(4)) || null, access_key: text(cell(5)) || null, authorization_date: asDateTime(cell(6)), issue_date: asDate(cell(7)), recipient_identification: text(cell(8)) || null, subtotal, vat: asNumber(cell(10)), total, assigned_to: text(cell(12)) || null, source_sheet: "GASTOS SRI DECLARADOS", source_row: index };
     const { error } = await supabase.from("tax_expenses").upsert(record, { onConflict: "organization_id,source_sheet,source_row" }); if (error) throw error; importedTaxExpenses += 1;
   }
 }
