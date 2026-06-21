@@ -9,7 +9,7 @@ const monthNames = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Juli
 const sections = [
   { label: "PRINCIPAL", items: [{ href: "/", label: "Resumen 2026", icon: BarChart3 }] },
   { label: "OPERACIÓN", items: [{ href: "/guias", label: "Control de guías", icon: Truck }, { href: "/guias?estado=Pendiente", label: "Guías pendientes", icon: FileClock }, { href: "/guias?vista=filtracion", label: "Filtración de guías", icon: BookOpenCheck }] },
-  { label: "CONTABILIDAD", items: [{ href: "/gastos", label: "Gastos SRI declarados", icon: ReceiptText }, { href: "/gastos-empresa", label: "Control de gastos", icon: WalletCards }, { href: "/inversion", label: "Gastos, facturas e inversión", icon: CircleDollarSign }, { href: "/facturas?filtro=caducar", label: "Facturas por caducar", icon: FileText }] },
+  { label: "CONTABILIDAD", items: [{ href: "/gastos", label: "Gastos SRI declarados", icon: ReceiptText }, { href: "/gastos-empresa", label: "Control de gastos", icon: WalletCards }, { href: "/saldos", label: "Saldos por socio", icon: CircleDollarSign }, { href: "/inversion", label: "Gastos, facturas e inversión", icon: CircleDollarSign }, { href: "/facturas?filtro=caducar", label: "Facturas por caducar", icon: FileText }] },
   { label: "CATÁLOGOS", items: [{ href: "/base-datos", label: "Base de datos", icon: Database }, { href: "/configuracion", label: "Configuración", icon: Settings }] },
 ];
 
