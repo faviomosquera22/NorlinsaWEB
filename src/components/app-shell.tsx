@@ -38,10 +38,10 @@ export function AppShell({ children }: { children: React.ReactNode }) {
   return <div className="min-h-screen bg-[var(--background)] text-[var(--foreground)]">
     <header className="sticky top-0 z-30 flex h-16 items-center justify-between border-b border-[var(--line)] bg-white/95 px-5 backdrop-blur lg:hidden"><Link href="/" className="relative h-12 w-32"><Image src="/norlinsa-logo.jpg" alt="NORLINSA Logística de Transporte" fill sizes="128px" className="object-contain" priority/></Link><button onClick={() => setIsMobileMenuOpen((open) => !open)} aria-label="Abrir navegación" className="rounded-lg p-2 text-[var(--muted)]">{isMobileMenuOpen ? <X size={20}/> : <Menu size={20}/>}</button></header>
     {isMobileMenuOpen && <div className="fixed inset-x-0 top-16 z-20 max-h-[calc(100vh-4rem)] overflow-y-auto border-b border-[var(--line)] bg-white p-4 shadow-lg lg:hidden">{links()}</div>}
-    <aside className="fixed inset-y-0 hidden w-64 border-r border-[var(--line)] bg-white px-4 py-6 lg:block">
+    <aside className="fixed inset-y-0 hidden w-64 flex-col border-r border-[var(--line)] bg-white px-4 py-6 lg:flex">
       <Link href="/" className="relative mb-8 block h-28 w-full"><Image src="/norlinsa-logo.jpg" alt="NORLINSA Logística de Transporte" fill sizes="224px" className="object-contain" priority/></Link>
-      <div className="max-h-[calc(100vh-11rem)] overflow-y-auto pr-1">{links()}</div>
-      <div className="absolute inset-x-4 bottom-6 rounded-xl bg-[#f0f4f1] p-3 text-xs text-[var(--muted)]"><strong className="mb-1 block text-[var(--foreground)]">Equipo NORLINSA</strong>Acceso compartido y trazabilidad de cada cambio.</div>
+      <div className="min-h-0 flex-1 overflow-y-auto pr-1">{links()}</div>
+      <div className="mt-4 shrink-0 rounded-xl bg-[#f0f4f1] p-3 text-xs text-[var(--muted)]"><strong className="mb-1 block text-[var(--foreground)]">Equipo NORLINSA</strong>Acceso compartido y trazabilidad de cada cambio.</div>
     </aside>
     <main className="lg:ml-64">{children}</main>
   </div>;
